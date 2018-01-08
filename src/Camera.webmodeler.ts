@@ -1,7 +1,9 @@
 import { Component, createElement } from "react";
 
-import { CameraState } from "./components/Camera";
-import { ContainerProps } from "./components/CameraContainer";
+import { Camera, CameraState } from "./components/Camera";
+import { ContainerProps, ModelerProps } from "./components/CameraContainer";
+
+declare function require(name: string): string;
 
 // tslint:disable-next-line class-name
 export class preview extends Component<ContainerProps, CameraState> {
@@ -11,6 +13,14 @@ export class preview extends Component<ContainerProps, CameraState> {
     }
 
     render() {
-        return createElement("div", { className: "div-class" }, "webmodeler");
+        return createElement(Camera as any, {
+            ...this.props as ModelerProps,
+            filter: () => { return; },
+            onClickAction: () => { return; }
+        });
     }
+}
+
+export function getPreviewCss() {
+    return require("./ui/Camera.scss");
 }
