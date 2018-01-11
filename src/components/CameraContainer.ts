@@ -24,24 +24,22 @@ export interface ModelerProps extends WrapperProps {
     switchCameraIcon: string;
     usePictureButtonIcon: string;
     captionsToUse: string;
-    name: string;
-    contents: string;
- }
+}
 
 export interface ContainerProps extends ModelerProps {
-    onClickAction: (image: { src: string, id: string }, microflowName: string) => {};
+    onClickAction: (image: { src: string, id: string }, microflowName?: string) => {};
     imageFilter: string;
     filter: string;
 }
 
 export default class CameraContainer extends Component<ContainerProps> {
-    private base64: string;
+    private base64Image: string;
+    private imageData: ImageData;
 
     constructor(props: ContainerProps) {
         super(props);
 
         this.setFilter = this.setFilter.bind(this);
-        this.executeMicroflow = this.executeMicroflow.bind(this);
         this.savePhoto = this.savePhoto.bind(this);
         this.base64toBlob = this.base64toBlob.bind(this);
     }
@@ -58,66 +56,71 @@ export default class CameraContainer extends Component<ContainerProps> {
     private setFilter(): string {
         if (this.props.imageFilter === "grayscale") {
             return "grayscale(1)";
-        } else if (this.props.imageFilter === "huerotate") {
-            return "hue-rotate(90deg)";
         } else if (this.props.imageFilter === "sepia") {
             return "sepia(1)";
         } else
             return "none";
     }
 
-    private savePhoto(image: { src: string, id: string }, microflow: string) {
-        if (this.props.mxObject.inheritsFrom("System.Image") && image.src) {
-            window.mx.data.saveDocument(
-                this.props.mxObject.getGuid(),
-                image.id,
-                {},
-                this.base64toBlob(image.src),
-                () => {
-                    window.mx.ui.info("Image has been saved", false);
-                    if (microflow) {
-                    window.mx.ui.action(microflow, {
-                        error: (error) => {
-                            window.mx.ui.error(`Error while executing microflow ${microflow}: ${error.message}`);
-                        },
-                        params: {
-                            applyto: "selection",
-                            guids: [ this.props.mxObject.getGuid() ]
-                        }
-                    }, this);
+    private filterImage(image: { src: string, id: string }) {
+        const newImage = document.createElement("img");
+        newImage.setAttribute("src", image.src);
+
+        const canvas = document.createElement("canvas");
+        canvas.height = newImage.height;
+        canvas.width = newImage.width;
+        const context = canvas.getContext("2d");
+
+        if (context) {
+            context.drawImage(newImage, 0, 0, canvas.width, canvas.height);
+            this.imageData = context.getImageData(0, 0, newImage.width, newImage.height);
+            const d = this.imageData.data;
+            if (this.props.imageFilter === "grayscale") {
+                for (let i = 0; i < d.length; i += 4) {
+                    const red = d[i];
+                    const green = d[i + 1];
+                    const blue = d[i + 2];
+                    const v = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+                    d[i] = d[i + 1] = d[i + 2] = v;
                 }
-                },
-                error => { window.mx.ui.error(error.message, false); }
-            );
-        } else {
-            window.mx.ui.error("The entity does not inherit from System Image", false);
+                context.putImageData(this.imageData, 0, 0);
+                this.base64Image = canvas.toDataURL();
+            } else if (this.props.imageFilter === "sepia") {
+                for (let x = 0; x < d.length; x += 4) {
+                    const r = d[x];
+                    const g = d[x + 1];
+                    const b = d[x + 2];
+                    const sepiaR = r * .393 + g * .769 + b * .189;
+                    const sepiaG = r * .349 + g * .686 + b * .168;
+                    const sepiaB = r * .272 + g * .534 + b * .131;
+                    d[x] = sepiaR;
+                    d[x + 1] = sepiaG;
+                    d[x + 2] = sepiaB;
+                }
+                context.putImageData(this.imageData, 0, 0);
+                this.base64Image = canvas.toDataURL();
+            } else {
+                this.base64Image = image.src;
+            }
         }
     }
 
-    private executeMicroflow(image: { src: string, id: string }, microflow: string) {
-        window.mx.data.create({
-            callback: (object) => {
-                const reader = new FileReader();
-
-                reader.readAsBinaryString(this.base64toBlob(image.src));
-                object.set(this.props.contents, this.base64);
-                object.set(this.props.name, image.id);
-
-                window.mx.ui.action(microflow, {
-                    error: (error) => {
-                        window.mx.ui.error(`Error while executing microflow ${microflow}: ${error.message}`);
-                    },
-                    params: {
-                        applyto: "selection",
-                        guids: [ object.getGuid() ]
-                    }
-                }, this);
-            },
-            entity: this.props.photo,
-            error: error => {
-                window.mx.ui.error(`Could not create object: ${error}`);
-            }
-        });
+    private savePhoto(image: { src: string, id: string }) {
+        this.filterImage(image);
+        if (this.props.mxObject.inheritsFrom("System.Image") && image.src) {
+            mx.data.saveDocument(
+                this.props.mxObject.getGuid(),
+                image.id,
+                {},
+                this.base64toBlob(this.base64Image),
+                () => {
+                    mx.ui.info("Image has been saved", false);
+                },
+                error => { mx.ui.error(error.message, false); }
+            );
+        } else {
+            mx.ui.error("The entity does not inherit from System Image", false);
+        }
     }
 
     private base64toBlob(base64Uri: string): Blob {

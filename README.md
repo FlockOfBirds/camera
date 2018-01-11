@@ -10,7 +10,7 @@ Allows users to take and save pictures on their mendix applications.
 * Swap between the different camera devices
 
 ## Dependencies
-Mendix 7.8
+Mendix 7.10
 
 ## Demo project
 https://cameratest100.mxapps.io/
@@ -50,7 +50,7 @@ The widget requires a context and should be configured as shown below
     The kind of labels to be used for the onclick events in the widget
 
 ## Issues, suggestions and feature requests
-Please report issues at https://github.com/Stanley-Okwii/Camera/issues
+Please report issues at https://github.com/FlockOfBirds/camera/issues
 
 ## Development and contribution
 Please follow [development guide](/development.md)

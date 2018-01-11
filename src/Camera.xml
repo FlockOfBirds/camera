@@ -53,19 +53,12 @@
                 <enumerationValue key="grayscale">Grayscale</enumerationValue>
                 <enumerationValue key="none">Color</enumerationValue>
                 <enumerationValue key="sepia">Sepia</enumerationValue>
-                <enumerationValue key="huerotate">Hue</enumerationValue>
             </enumerationValues>
         </property>
         <property key="photo" type="entity" required="true">
             <caption>Select entity</caption>
             <category>Behaviour</category>
             <description>This is the entity property</description>
-        </property>
-        <property key="saveImage" type="microflow" required="false" defaultValue="">
-            <caption>After use photo microflow</caption>
-            <category>Behaviour</category>
-            <description>Select a microflow to execute after the image has successfully saved</description>
-            <returnType type="String" />
         </property>
         <property key="captureButtonName" type="translatableString" required="false" >
             <caption>Capture button</caption>

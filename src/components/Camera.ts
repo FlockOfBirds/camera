@@ -15,11 +15,10 @@ export interface CameraProps {
     filter: string;
     height: number;
     heightUnit: string;
-    onClickAction: (image: { src: string, id: string }, microflowName: string) => void;
+    onClickAction: (image: { src: string, id: string }) => void;
     recaptureButtonName: string;
     style?: object;
     switchCameraIcon: string;
-    saveImage: string;
     usePictureButtonIcon: string;
     usePictureButtonName: string;
     width: number;
@@ -30,13 +29,23 @@ export interface CameraState {
     browserSupport: boolean;
     cameraDevicePosition: number;
     screenshot: string;
-    noRepeat: boolean;
+    getUserMediaDevice: boolean;
     pictureTaken: boolean;
     pictureId: string;
 }
 
 export interface Webcam {
     getScreenshot: () => string;
+
+    stream: {
+        id: string
+    };
+
+    ctx: {
+        canvas: HTMLCanvasElement;
+    };
+
+    getCanvas: () => HTMLCanvasElement;
 }
 
 export type FileFormats = "jpeg" | "png" | "svg";
@@ -54,7 +63,7 @@ export class Camera extends Component<CameraProps, CameraState> {
         this.state = {
             browserSupport: true,
             cameraDevicePosition: 0,
-            noRepeat: false,
+            getUserMediaDevice: true,
             pictureId: "",
             pictureTaken: false,
             screenshot: ""
@@ -96,8 +105,7 @@ export class Camera extends Component<CameraProps, CameraState> {
                     mx.ui.error(`${error.name}: ${error.message}`);
                 });
         }
-        // tslint:disable-next-line:no-console
-        console.log(`mounted from ts`);
+
     }
 
     componentDidUpdate() {
@@ -106,13 +114,6 @@ export class Camera extends Component<CameraProps, CameraState> {
         } else {
             this.getStream();
         }
-        // tslint:disable-next-line:no-console
-        console.log("updated component.");
-    }
-
-    componentWillUnmount() {
-        // tslint:disable-next-line:no-console
-        console.log("Unmounted from ts.");
     }
 
     private setCameraReference(webcam: Webcam) {
@@ -123,19 +124,24 @@ export class Camera extends Component<CameraProps, CameraState> {
 
     private takePicture() {
         this.setState({
-            pictureId: `${this.outputStream.id}.${this.props.fileType}`,
+            pictureId: `${this.webcam.stream.id}.${this.props.fileType}`,
             pictureTaken: true,
             screenshot: this.webcam.getScreenshot()
         });
     }
 
-    private retakePicture() { this.setState({ pictureTaken: false }); }
+    private retakePicture() {
+        this.setState({
+            pictureTaken: false
+        });
+        window.URL.revokeObjectURL(this.state.screenshot);
+    }
 
     private changeCamera() {
         const cameraDevicePosition: number = this.state.cameraDevicePosition < (this.availableDevices.length - 1)
             ? this.state.cameraDevicePosition + 1
             : 0;
-        this.setState({ cameraDevicePosition, noRepeat: false });
+        this.setState({ cameraDevicePosition, getUserMediaDevice: false });
     }
 
     private createSwitchCameraButton(): ReactElement<{}> {
@@ -188,7 +194,7 @@ export class Camera extends Component<CameraProps, CameraState> {
                 onClick: () => this.props.onClickAction({
                     id: this.state.pictureId,
                     src: this.state.screenshot
-                }, this.props.saveImage)
+                })
             },
                 this.createIcons(this.props.usePictureButtonName, this.props.usePictureButtonIcon)
             )
@@ -211,7 +217,7 @@ export class Camera extends Component<CameraProps, CameraState> {
             style.paddingBottom = `${this.props.height}%`;
         } else if (this.props.heightUnit === "pixels") {
             style.height = `${this.props.height}px`;
-        } else if (this.props.heightUnit === "percentageOfParent") {
+        } else {
             style.height = `${this.props.height}%`;
         }
 
@@ -230,9 +236,7 @@ export class Camera extends Component<CameraProps, CameraState> {
             });
         }
 
-        if (this.state.noRepeat) {
-            //
-        } else {
+        if (this.state.getUserMediaDevice === false) {
             this.videoElement = findDOMNode(this).firstChild as HTMLVideoElement;
             navigator.mediaDevices.getUserMedia(this.constraints)
                 .then((stream: MediaStream) => {

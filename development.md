@@ -3,7 +3,7 @@
  
  To contribute, fork and clone.
  
-   > git clonehttps://github.com/Stanley-Okwii/Camera.git
+   > git clone https://github.com/FlockOfBirds/camera.git
  
  The code is in typescript. Use a typescript IDE of your choice, like Visual Studio Code or WebStorm.
  
@@ -14,7 +14,8 @@
  Create a folder named `dist` in the project root.
  
  Create a Mendix test project in the dist folder and rename its root folder to `dist/MxTestProject`. Changes to the widget code shall be automatically pushed to this test project.
- Or get the test project from [https://github.com/Stanley-Okwii/Camera/releases/latest](https://github.com/Stanley-Okwii/Camera/releases/latest)
+ Or get the test project from [https://github.com/FlockOfBirds/camera/releases]
+ (https://github.com/FlockOfBirds/camera/releases)
 
  To automatically compile, bundle and push code changes to the running test project, run:
    > grunt
