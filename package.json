@@ -49,7 +49,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "grunt": "1.0.1",
     "grunt-check-dependencies": "^1.0.0",
-    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-compress": "^1.4.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
@@ -92,6 +92,7 @@
     "image-filter-grayscale": "^1.0.1",
     "image-filter-sepia": "^1.0.1",
     "react-image-filter": "^0.1.2",
-    "react-webcam": "^0.2.0"
+    "react-webcam": "^0.2.0",
+    "webcamjs": "^1.0.24"
   }
 }

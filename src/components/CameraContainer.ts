@@ -27,7 +27,7 @@ export interface ModelerProps extends WrapperProps {
 }
 
 export interface ContainerProps extends ModelerProps {
-    onClickAction: (image: { src: string, id: string }, microflowName?: string) => {};
+    onClickAction: (image: {src: string, id: string}) => {};
     imageFilter: string;
     filter: string;
 }
@@ -62,9 +62,9 @@ export default class CameraContainer extends Component<ContainerProps> {
             return "none";
     }
 
-    private filterImage(image: { src: string, id: string }) {
+    private filterImage(src: string) {
         const newImage = document.createElement("img");
-        newImage.setAttribute("src", image.src);
+        newImage.setAttribute("src", src);
 
         const canvas = document.createElement("canvas");
         canvas.height = newImage.height;
@@ -100,17 +100,17 @@ export default class CameraContainer extends Component<ContainerProps> {
                 context.putImageData(this.imageData, 0, 0);
                 this.base64Image = canvas.toDataURL();
             } else {
-                this.base64Image = image.src;
+                this.base64Image = src;
             }
         }
     }
 
-    private savePhoto(image: { src: string, id: string }) {
-        this.filterImage(image);
+    private savePhoto(image: {src: string, id: string}) {
+        this.filterImage(image.src);
         if (this.props.mxObject.inheritsFrom("System.Image") && image.src) {
             mx.data.saveDocument(
                 this.props.mxObject.getGuid(),
-                image.id,
+                `${image.id}.${this.props.fileType}`,
                 {},
                 this.base64toBlob(this.base64Image),
                 () => {
