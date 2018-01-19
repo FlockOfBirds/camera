@@ -1,5 +1,5 @@
 import { CSSProperties, Component, ReactElement, createElement } from "react";
-import { attach, container, reset, set, snap, stream, userMedia } from "webcamjs";
+import { attach, container, reset, set, snap, stream } from "webcamjs";
 import { findDOMNode } from "react-dom";
 import * as classNames from "classnames";
 
@@ -18,6 +18,7 @@ export interface CameraProps {
     onClickAction: (image: {src: string, id: string }) => void;
     recaptureButtonName: string;
     style?: object;
+    switchCameraIcon: string;
     usePictureButtonIcon: string;
     usePictureButtonName: string;
     height: number;
@@ -25,6 +26,8 @@ export interface CameraProps {
 }
 
 export interface CameraState {
+    cameraDevicePosition: number;
+    swapCamera: boolean;
     pictureId: string;
     pictureTaken: boolean;
     retakePhoto: boolean;
@@ -37,27 +40,34 @@ export class Camera extends Component<CameraProps, CameraState> {
     private webcam?: HTMLDivElement;
     private videoElement: HTMLVideoElement;
     private pictureWidth: number;
+    private browserSupport: boolean;
+    private availableDevices: string[];
 
     constructor(props: CameraProps) {
         super(props);
 
         this.state = {
+            cameraDevicePosition: 0,
             pictureId: "",
             pictureTaken: false,
             retakePhoto: false,
-            screenshot: ""
+            screenshot: "",
+            swapCamera: false
         };
 
+        this.availableDevices = [];
         this.setCameraReference = this.setCameraReference.bind(this);
         this.retakePicture = this.retakePicture.bind(this);
         this.setStyle = this.setStyle.bind(this);
         this.takePicture = this.takePicture.bind(this);
         this.setUpWebCam = this.setUpWebCam.bind(this);
+        this.onClick = this.onClick.bind(this);
+        this.changeCamera = this.changeCamera.bind(this);
         this.bindDimensions = this.bindDimensions.bind(this);
     }
 
     render() {
-        if (!userMedia) {
+        if (this.browserSupport === false) {
             return this.renderAlert("This browser does not support the camera widget. Google-chrome is recommended.");
         }
         if (this.state.pictureTaken && this.state.screenshot) {
@@ -67,6 +77,114 @@ export class Camera extends Component<CameraProps, CameraState> {
         return this.renderWebCam();
     }
 
+    private renderWebCam(): ReactElement<{}> {
+        return createElement("div", { className: "widget-camera-parent", style: this.setStyle(this.props) },
+            createElement("div", {
+                ref: this.setCameraReference,
+                style: { filter: this.props.filter }
+            }),
+            this.createContainer({},
+                this.createButton(
+                    this.props.captureButtonName,
+                    this.props.captureButtonIcon,
+                    this.takePicture,
+                    "widget-camera-picture"
+                ), this.createSwitchCameraButton()
+            )
+        );
+    }
+
+    private renderPhoto(): ReactElement<{}> {
+        return createElement("div", { className: classNames("widget-camera-parent") },
+            createElement("img", {
+                alt: "Image could not be found!",
+                src: this.state.screenshot,
+                style: this.bindDimensions()
+            }),
+            this.createContainer(
+                { width: this.pictureWidth },
+                this.createButton(
+                    this.props.recaptureButtonName,
+                    this.props.captureButtonIcon,
+                    this.retakePicture,
+                    "widget-camera-picture"
+                ),
+                this.createButton(
+                    this.props.usePictureButtonName,
+                    this.props.usePictureButtonIcon,
+                    this.onClick,
+                    "widget-camera-switch-button"
+                )
+            )
+        );
+    }
+
+    private createIcon(buttonLabel: string, glyphiconName: string): ReactElement<{}> {
+        return (this.props.captionsToUse === "icons")
+            ? createElement("span", { className: classNames(`glyphicon glyphicon-${glyphiconName}`) })
+            : createElement("button", { className: classNames("btn btn-inverse active") }, buttonLabel);
+    }
+
+    private createButton(buttonLabel: string, glyphiconName: string, action: () => void, buttonclass: string): ReactElement<{}> {
+        return createElement("span", {
+            className: classNames(buttonclass),
+            onClick: action
+        },
+            this.createIcon(buttonLabel, glyphiconName)
+        );
+    }
+
+    private createSwitchCameraButton(): ReactElement<{}> {
+        if (this.availableDevices.length > 1) {
+            return this.createButton(
+                "Switch",
+                this.props.switchCameraIcon,
+                this.changeCamera,
+                "widget-camera-switch-button"
+            );
+        }
+
+        return createElement("div", {});
+    }
+
+    private changeCamera() {
+        const cameraDevicePosition: number = this.state.cameraDevicePosition < (this.availableDevices.length - 1)
+            ? this.state.cameraDevicePosition + 1
+            : 0;
+        this.setState({ cameraDevicePosition, swapCamera: true });
+    }
+
+    private createContainer(property?: object, childOne?: ReactElement<{}>, childTwo?: ReactElement<{}>): ReactElement<{}> {
+        return createElement("div", { style: property }, childOne, childTwo);
+    }
+
+    private renderAlert(message: string): ReactElement<AlertProps> {
+        return createElement(Alert, {
+            bootstrapStyle: "danger",
+            className: "",
+            message
+        });
+    }
+
+    componentWillMount() {
+        if (!navigator.mediaDevices) {
+            this.browserSupport = false;
+        } else {
+            navigator.mediaDevices.enumerateDevices()
+                .then((devices: Array<{ kind: string, deviceId: string }>) => {
+                    devices.filter((device: { kind: string, deviceId: string }) => {
+                        if (device.kind === "videoinput") {
+                            this.availableDevices.push(device.deviceId);
+                        }
+                    });
+                })
+                .catch((error: Error) => {
+                    mx.ui.error(`${error.name}: ${error.message}`);
+                });
+            this.browserSupport = true;
+        }
+    }
+
     componentDidMount() {
         if (!container) {
             this.setUpWebCam();
@@ -74,7 +192,7 @@ export class Camera extends Component<CameraProps, CameraState> {
             reset();
             window.setTimeout(() => {
                 this.setUpWebCam();
-            }, 500);
+            }, 50);
         }
     }
 
@@ -84,16 +202,17 @@ export class Camera extends Component<CameraProps, CameraState> {
                 this.setUpWebCam();
             } else {
                 reset();
-                window.setTimeout(() => {
-                    this.setUpWebCam();
-                }, 500);
+                this.setUpWebCam();
             }
+        } else if (this.state.swapCamera) {
+                this.setUpWebCam();
         }
     }
 
     private setUpWebCam() {
         if (this.webcam && this.webcam.parentElement) {
             set("constraints", {
+                deviceId: this.availableDevices[this.state.cameraDevicePosition],
                 height: this.webcam.parentElement.clientHeight,
                 width: this.webcam.parentElement.clientWidth
             });
@@ -143,52 +262,11 @@ export class Camera extends Component<CameraProps, CameraState> {
         this.setState({ pictureTaken: false });
     }
 
-    private renderWebCam(): ReactElement<{}> {
-        return createElement("div", { className: "widget-camera-parent", style: this.setStyle(this.props) },
-            createElement("div", {
-                ref: this.setCameraReference,
-                style: { filter: this.props.filter }
-            }),
-            createElement("span", {
-                className: classNames("picture-class1"),
-                onClick: this.takePicture
-            },
-                this.createIcons(this.props.captureButtonName, this.props.captureButtonIcon)
-            )
-        );
-    }
-
-    private renderPhoto(): ReactElement<{}> {
-        return createElement("div", { className: classNames("widget-camera-parent") },
-            createElement("img", {
-                alt: "Image could not be found!",
-                src: this.state.screenshot,
-                style:  this.bindDimensions()
-            }),
-            createElement("div", { style: { width: this.pictureWidth } },
-                createElement("span", {
-                    className: classNames("picture-class"),
-                    onClick: this.retakePicture
-                },
-                    this.createIcons(this.props.recaptureButtonName, this.props.captureButtonIcon)
-                ),
-                createElement("span", {
-                    className: classNames("switch-button"),
-                    onClick: () => this.props.onClickAction({
-                        id: this.state.pictureId,
-                        src: this.state.screenshot
-                    })
-                },
-                    this.createIcons(this.props.usePictureButtonName, this.props.usePictureButtonIcon)
-                )
-            )
-        );
-    }
-
-    private createIcons(buttonLabel: string, styleName: string): ReactElement<{}> {
-        return (this.props.captionsToUse === "icons")
-            ? createElement("span", { className: classNames(`glyphicon glyphicon-${styleName}`) })
-            : createElement("button", { className: classNames("btn btn-inverse active") }, buttonLabel);
+    private onClick() {
+        this.props.onClickAction({
+            id: this.state.pictureId,
+            src: this.state.screenshot
+        });
     }
 
     private setStyle(props: CameraProps): CSSProperties {
@@ -204,7 +282,7 @@ export class Camera extends Component<CameraProps, CameraState> {
         return style;
     }
 
-    private bindDimensions(): object {
+    private bindDimensions(): CSSProperties {
         if (this.webcam && this.webcam.parentElement) {
             return {
                 filter: this.props.filter,
@@ -214,13 +292,5 @@ export class Camera extends Component<CameraProps, CameraState> {
         }
 
         return {};
-    }
-
-    private renderAlert(message: string): ReactElement<AlertProps> {
-        return createElement(Alert, {
-            bootstrapStyle: "danger",
-            className: "",
-            message
-        });
     }
 }

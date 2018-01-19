@@ -2,28 +2,20 @@
     position: relative;
     width: 100%;
     height: 100%;
-}
+    }
 
-span.switch-button{
+.widget-camera-picture{
+    cursor: pointer;
+    float: left;
+    top: -42px;
+    position: relative;
+    }
+
+.widget-camera-switch-button{
     cursor: pointer;
     float: right;
     top: -42px;
     position: relative;
-}
-span.picture-class{
-    cursor: pointer;
-    float: left;
-    top: -42px;
-    position: relative;
-}
-span.picture-class1{
-    position: relative;
-    cursor: pointer;
-    top: -42px;
-    float: left;
-}
-div.buttoncontainer{
-    margin-left: 160px;
 }
 
 span.Spacing{
