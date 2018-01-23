@@ -73,7 +73,6 @@
     "raw-loader": "^0.5.1",
     "react": "^15.6.2",
     "react-addons-test-utils": "^15.6.2",
-    "react-dom": "^15.6.2",
     "remap-istanbul": "^0.9.0",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.0",
@@ -88,11 +87,6 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "image-filter-core": "^2.0.2",
-    "image-filter-grayscale": "^1.0.1",
-    "image-filter-sepia": "^1.0.1",
-    "react-image-filter": "^0.1.2",
-    "react-webcam": "^0.2.0",
     "webcamjs": "^1.0.24"
   }
 }

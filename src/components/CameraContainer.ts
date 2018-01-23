@@ -1,7 +1,5 @@
 import { Component, createElement } from "react";
-
 import { Camera, FileFormats } from "./Camera";
-
 import { parseStyle } from "../utils/ContainerUtils";
 
 interface WrapperProps {
@@ -23,7 +21,7 @@ export interface ModelerProps extends WrapperProps {
     captureButtonIcon: string;
     switchCameraIcon: string;
     usePictureButtonIcon: string;
-    captionsToUse: string;
+    captionToUse: string;
 }
 
 export interface ContainerProps extends ModelerProps {
