@@ -1,7 +1,7 @@
 import { Component, createElement } from "react";
 import * as classNames from "classnames";
 
-interface CameraButtonProps {
+export interface CameraButtonProps {
     buttonClass: string;
     className?: string;
     glyphIcon: string;
