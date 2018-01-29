@@ -59,7 +59,7 @@
             <category>Behaviour</category>
             <description>This is the entity property</description>
         </property>
-        <property key="captureButtonName" type="translatableString" required="false" >
+        <property key="captureButton" type="translatableString" required="false" >
             <caption>Capture button</caption>
             <category>Buttons</category>
             <description>This caption acts as the take picture button. This button should not have an action</description>
@@ -68,22 +68,22 @@
                 <translation lang="nl_NL">Maak enn foto</translation>
             </translations>
         </property>
-        <property key="captureButtonIcon" type="string" defaultValue="camera">
+        <property key="captureIcon" type="string" defaultValue="camera">
             <caption>Capture icon</caption>
             <category>Buttons</category>
-            <description>The name of the Glyphicon for the take picture button </description>
+            <description>The name of the Glyphicon for the take picture button. Append the only last name of the glyphicon like "camera"</description>
         </property>
         <property key="switchCameraIcon" type="string" defaultValue="refresh">
             <caption>Switch camera icon</caption>
             <category>Buttons</category>
-            <description>The name of the Glyphicon for the switch camera button</description>
+            <description>The name of the Glyphicon for the switch camera button. Append the only last name of the glyphicon like "refresh</description>
         </property>
-        <property key="usePictureButtonIcon" type="string" defaultValue="download">
-            <caption>Use picture icon</caption>
+        <property key="savePictureIcon" type="string" defaultValue="download">
+            <caption>Save picture icon</caption>
             <category>Buttons</category>
-            <description>The name of the Glyphicon for the save/submit picture button</description>
+            <description>The name of the Glyphicon for the save/submit picture button. Append the only last name of the glyphicon like "download"</description>
         </property>
-        <property key="recaptureButtonName" type="translatableString" required="false" >
+        <property key="recaptureButton" type="translatableString" required="false" >
             <caption>Recapture button</caption>
             <category>Buttons</category>
             <description>This caption acts as the retake picture button. This button is hidden in capture mode</description>
@@ -92,7 +92,7 @@
                 <translation lang="nl_NL">Maak enn foto</translation>
             </translations>
         </property>
-        <property key="usePictureButtonName" type="translatableString" required="false" >
+        <property key="savePictureButton" type="translatableString" required="false" >
             <caption>OK button</caption>
             <category>Buttons</category>
             <description>This caption acts as the OK/save/submit button. This button is hidden in capture mode</description>
@@ -101,13 +101,13 @@
                 <translation lang="nl_NL">Gebruik foto</translation>
             </translations>
         </property>
-        <property key="captionToUse" type="enumeration" defaultValue="icons">
+        <property key="captionType" type="enumeration" defaultValue="icons">
             <caption>Label to use</caption>
             <category>Buttons</category>
             <description>Select the type of labels for the buttons</description>
             <enumerationValues>
                 <enumerationValue key="icons">Icons</enumerationValue>
-                <enumerationValue key="buttonNames">Buttons</enumerationValue>
+                <enumerationValue key="buttons">Buttons</enumerationValue>
             </enumerationValues>
         </property>
     </properties>

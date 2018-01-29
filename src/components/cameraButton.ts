@@ -1,28 +1,27 @@
 import { Component, createElement } from "react";
-import * as classNames from "classnames";
+import { CaptionType } from "./Camera";
 
 export interface CameraButtonProps {
-    buttonClass: string;
-    className?: string;
+    spanClass: string;
     glyphIcon: string;
-    onClickAction?: () => void;
+    onClickAction: () => void;
     buttonLabel: string;
-    caption: string;
+    caption: CaptionType;
 }
 
 export class CameraButton extends Component<CameraButtonProps, {}> {
     render() {
         return createElement("span", {
-            className: classNames(this.props.buttonClass),
+            className: this.props.spanClass,
             onClick: this.props.onClickAction
         },
             this.createIcon(this.props.buttonLabel, this.props.glyphIcon, this.props.caption)
         );
     }
 
-    private createIcon(buttonLabel: string, glyphiconName: string , caption: string) {
+    private createIcon(buttonLabel: string, glyphiconName: string , caption: CaptionType) {
         return(caption === "icons")
-            ? createElement("span", { className: classNames(`glyphicon glyphicon-${glyphiconName}`) })
-            : createElement("button", { className: classNames("btn btn-inverse active") }, buttonLabel);
+            ? createElement("span", { className: `glyphicon glyphicon-${glyphiconName}` })
+            : createElement("button", { className: "btn btn-inverse active" }, buttonLabel);
     }
 }

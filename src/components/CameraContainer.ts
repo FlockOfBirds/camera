@@ -1,40 +1,42 @@
 import { Component, createElement } from "react";
-import { Camera, FileFormats } from "./Camera";
+import { Camera, CaptionType, FileFormats } from "./Camera";
 import { parseStyle } from "../utils/ContainerUtils";
 
 interface WrapperProps {
     mxObject: mendix.lib.MxObject;
     style: string;
+    class: string;
+    friendlyId: string;
 }
 
 export interface ModelerProps extends WrapperProps {
     saveImage: string;
-    captureButtonName: string;
-    recaptureButtonName: string;
-    usePictureButtonName: string;
+    captureButton: string;
+    recaptureButton: string;
+    savePictureButton: string;
     fileType: FileFormats;
     photo: string;
     widthUnit: string;
     heightUnit: string;
     width: number;
     height: number;
-    captureButtonIcon: string;
+    captureIcon: string;
     switchCameraIcon: string;
-    usePictureButtonIcon: string;
-    captionToUse: string;
+    savePictureIcon: string;
+    captionType: CaptionType;
 }
 
-export interface ContainerProps extends ModelerProps {
+export interface CameraContainerProps extends ModelerProps {
     onClickAction: (image: {src: string, id: string}) => {};
     imageFilter: string;
     filter: string;
 }
 
-export default class CameraContainer extends Component<ContainerProps> {
+export default class CameraContainer extends Component<CameraContainerProps> {
     private base64Image: string;
     private imageData: ImageData;
 
-    constructor(props: ContainerProps) {
+    constructor(props: CameraContainerProps) {
         super(props);
 
         this.setFilter = this.setFilter.bind(this);
