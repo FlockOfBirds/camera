@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.orgFlockOfBirds/camera.svg?branch=master)](https://travis-ci.org/FlockOfBirds/camera)
 
 # Camera
 Allows users to take and save pictures on their mendix applications.

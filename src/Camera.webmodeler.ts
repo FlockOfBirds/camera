@@ -15,8 +15,8 @@ export class preview extends Component<CameraContainerProps, CameraState> {
     render() {
         return createElement(Camera as any, {
             ...this.props as ModelerProps,
-            filter: () => this.setFilter()
-            // onClickAction: () => { return; }
+            filter: () => this.setFilter(),
+            onClickAction: () => { return; }
         });
     }
 
@@ -34,9 +34,8 @@ export function getPreviewCss() {
     return require("./ui/Camera.scss");
 }
 
-// visibility props are missing.
-export function getVisibleProperties(valueMap: any, visibilityMap: any) {
-    visibilityMap.customCameraDimensions = valueMap.cameraDimensions === "custom";
+export function getVisibleProperties(value: any, visibility: any) {
+    visibility.customCameraDimensions = value.cameraDimensions === "custom";
 
-    return visibilityMap;
+    return visibility;
 }
