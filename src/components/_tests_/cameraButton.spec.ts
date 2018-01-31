@@ -57,8 +57,8 @@ describe("CameraButton", () => {
 
     it("should respond to onclick actions", () => {
         const CamerasButton = createCameraButton(defaultProps);
-        CamerasButton.simulate("click");
 
+        CamerasButton.simulate("click");
         expect(defaultProps.onClickAction).toHaveBeenCalled();
     });
 });

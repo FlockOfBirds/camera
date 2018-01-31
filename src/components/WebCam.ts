@@ -2,6 +2,8 @@ import { CSSProperties, Component, createElement } from "react";
 import { attach, container, reset, set } from "webcamjs";
 
 export interface WebCamProps {
+    height: number;
+    width: number;
     filter: string;
     fileType: string;
     style: CSSProperties;
@@ -15,26 +17,26 @@ export class WebCam extends Component<WebCamProps, {}> {
         super(props);
 
         this.setCameraReference = this.setCameraReference.bind(this);
-        this.setUpWebCame = this.setUpWebCame.bind(this);
+        this.setUpWebCam = this.setUpWebCam.bind(this);
     }
 
     componentDidMount() {
         if (!container) {
-            this.setUpWebCame();
+            this.setUpWebCam();
         } else {
             reset();
             window.setTimeout(() => {
-                this.setUpWebCame();
+                this.setUpWebCam();
             }, 40);
         }
     }
 
     componentDidUpdate() {
             if (!container) {
-                this.setUpWebCame();
+                this.setUpWebCam();
             } else {
                 reset();
-                this.setUpWebCame();
+                this.setUpWebCam();
             }
     }
 
@@ -51,18 +53,18 @@ export class WebCam extends Component<WebCamProps, {}> {
         }
     }
 
-    private setUpWebCame() {
+    private setUpWebCam() {
         if (this.webcam && this.webcam.parentElement) {
             set("constraints", {
-                height: this.webcam.parentElement.clientHeight,
-                width: this.webcam.parentElement.clientWidth
+                height: this.props.height,
+                width: this.props.width
             });
             set({
-                dest_height: this.webcam.parentElement.clientHeight,
-                dest_width: this.webcam.parentElement.clientWidth,
+                dest_height:  this.props.height,
+                dest_width: this.props.width,
                 image_format: this.props.fileType,
-                height: this.webcam.parentElement.clientHeight,
-                width: this.webcam.parentElement.clientWidth
+                height:  this.props.height,
+                width: this.props.width
             });
             attach(this.webcam);
         }

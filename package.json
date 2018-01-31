@@ -21,11 +21,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Stanley-Okwii/Camera"
+    "url": "https://github.com/FlockOfBirds/camera"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Stanley-Okwii/Camera/issues"
+    "url": "https://github.com/FlockOfBirds/camera/issues"
   },
   "babel": {
     "presets": [

@@ -1,7 +1,6 @@
 import { mount, shallow } from "enzyme";
 import { createElement } from "react";
 
-import { Alert } from "../Alert";
 import { CameraButton } from "../CameraButton";
 import { Camera, CameraProps } from "../Camera";
 import { Image } from "../Image";
@@ -9,7 +8,7 @@ import { WebCam } from "../WebCam";
 
 describe("Camera", () => {
     const shallowRenderCamera = (props: CameraProps) => shallow(createElement(Camera, props));
-
+    const fullRenderCamera = (props: CameraProps) => mount(createElement(Camera, props));
     const defaultProps: CameraProps = {
         captureButton: "Take Photo",
         captureIcon: "camera",
@@ -18,9 +17,9 @@ describe("Camera", () => {
         filter: "none" || undefined,
         width: 60,
         widthUnit: "pixels",
-        onClickAction: jasmine.createSpy("onClick"),
+        onClickAction: jasmine.any(Function),
         recaptureButton: "Retake photo",
-        ref: jasmine.createSpy("setref"),
+        ref:  jasmine.any(Function),
         style: {},
         switchCameraIcon: "refresh",
         savePictureIcon: "download",
@@ -35,8 +34,10 @@ describe("Camera", () => {
         expect(camera).toBeElement(
             createElement("div", { className: "widget-camera-wrapper", style: { filter: undefined, width: "60px" , height: "45px" } },
                 createElement(WebCam, {
-                    ref: jasmine.createSpy("setRef"),
+                    ref: jasmine.any(Function),
                     fileType: "jpeg",
+                    width: 60,
+                    height: 45,
                     filter: "none",
                     style: { filter: undefined, width: "60px" , height: "45px" }
                 }),
@@ -44,7 +45,7 @@ describe("Camera", () => {
                     createElement(CameraButton, {
                         spanClass: "widget-camera-picture",
                         glyphIcon: "camera",
-                        onClickAction: jasmine.createSpy("TakePicture"),
+                        onClickAction: jasmine.any(Function) ,
                         buttonLabel: "Take Photo",
                         caption: "icons"
                     })
@@ -54,28 +55,18 @@ describe("Camera", () => {
 
     it("should render an alert when browser does not support the widget", () => {
         const createAlert = shallowRenderCamera(defaultProps);
+        const alertInstance = createAlert.instance() as any;
+        const renderAlertSpy = spyOn(alertInstance, "renderAlert").and.callThrough();
+
         createAlert.setState({ browserSupport: false });
-        expect(createAlert).toBeElement(
-            createElement(Alert, {
-                bootstrapStyle: "danger",
-                className: "",
-                message: "This browser does not support the camera widget. Google-chrome is recommended."
-            }
-            )
-        );
+        expect(renderAlertSpy).toHaveBeenCalled();
     });
 
     describe("with take picture/camera button clicked", () => {
-        it("should stop all media video devices", () => {
-            const sshallowRenderCamera = (props: CameraProps) => mount(createElement(Camera, props));
-            const camerae = sshallowRenderCamera(defaultProps);
-            camerae.setProps({ style: { filter: undefined, width: "60px" , height: "45px" } });
-            camerae.childAt(1).childAt(0).simulate("click");
-        });
-
-        it("should render the picture structure correctly", () => {
+        it("should render the picture", () => {
             const createPicture = shallowRenderCamera(defaultProps);
-            createPicture.setState({ pictureTaken: true, screenshot: "base64image string" });
+            createPicture.setProps({ heightUnit: "percentageOfWidth" , widthUnit: "percentage" });
+            createPicture.setState({ browserSupport: true, pictureTaken: true, screenshot: "base64image string" });
             createElement("div", { className: "widget-camera-wrapper", style: { filter: undefined, width: "60px" } },
                 createElement(Image, {
                     src: "base64image string",
@@ -85,29 +76,63 @@ describe("Camera", () => {
                     createElement(CameraButton, {
                         spanClass: "widget-camera-picture",
                         glyphIcon: "camera",
-                        onClickAction: jasmine.createSpy("onClick"),
+                        onClickAction: jasmine.any(Function),
                         buttonLabel: "Take Photo",
                         caption: "icons"
                     }),
                     createElement(CameraButton, {
                         spanClass: "widget-camera-switch-button",
                         glyphIcon: "download",
-                        onClickAction: jasmine.createSpy("onClick"),
+                        onClickAction: jasmine.any(Function),
                         buttonLabel: "Save Photo",
                         caption: "icons"
                     })
                 )
             );
         });
+
+        it("should call take picture method", () => {
+            const camera = fullRenderCamera(defaultProps);
+            const cameraInstance = camera.instance() as any;
+            const takePicture = spyOn(cameraInstance, "takePicture").and.callThrough();
+
+            camera.setProps({ captionType: "buttons" , width: 70, height: 50 });
+            camera.setState({ browserSupport: true, pictureTaken: false, screenshot: "" });
+            camera.find(".widget-camera-picture").simulate("click");
+
+            expect(takePicture).toHaveBeenCalledTimes(1);
+        });
     });
 
     describe("with multiple media devices", () => {
         it("should render with 'switch icon'", () => {
-            //
+            const camera = shallowRenderCamera(defaultProps);
+
+            camera.setProps({ filter: "none", captionType: "icons" });
+            camera.setState({ availableDevices: [ "deviceOne", "deviceTwo" ] });
+
+            expect(camera.childAt(1).childAt(1).prop("glyphIcon")).toBe(defaultProps.switchCameraIcon);
         });
 
         it("should render with 'switch button'", () => {
-            //
+            const camera = shallowRenderCamera(defaultProps);
+
+            camera.setProps({ filter: "none", captionType: "buttons" });
+            camera.setState({ availableDevices: [ "deviceOne", "deviceTwo" ] });
+
+            expect(camera.childAt(1).childAt(1).prop("buttonLabel")).toBe("Switch");
+        });
+
+        it("should switch/swap camera when switch camera button is clicked", () => {
+            const camera = fullRenderCamera(defaultProps);
+            const cameraInstance = camera.instance() as any;
+            const changeCamera = spyOn(cameraInstance, "changeCamera").and.callThrough();
+
+            camera.setProps({ filter: "none", width: 70, height: 50 });
+            camera.setState({ availableDevices: [ "deviceOne", "deviceTwo" ] , browserSupport: true, pictureTaken: false, screenshot: "" });
+            camera.find(".widget-camera-switch-button").simulate("click");
+
+            expect(changeCamera).toHaveBeenCalled();
         });
     });
 
@@ -116,7 +141,7 @@ describe("Camera", () => {
             const createCamera = shallowRenderCamera(defaultProps);
 
             createCamera.setProps({ captionType: "icons" });
-            expect(createCamera.childAt(1).childAt(0).prop("glyphIcon")).toBe("camera");
+            expect(createCamera.childAt(1).childAt(0).prop("glyphIcon")).toBe(defaultProps.captureIcon);
         });
 
         it("should render with the correct 'retake icon'", () => {
@@ -124,7 +149,7 @@ describe("Camera", () => {
 
             createCamera.setProps({ captionType: "icons" });
             createCamera.setState({ pictureTaken: true, screenshot: "base64image string" });
-            expect(createCamera.childAt(1).childAt(0).prop("glyphIcon")).toBe("camera");
+            expect(createCamera.childAt(1).childAt(0).prop("glyphIcon")).toBe(defaultProps.captureIcon);
         });
 
         it("should render with the correct 'save icon'", () => {
@@ -132,7 +157,7 @@ describe("Camera", () => {
 
             createCamera.setProps({ captionType: "icons" });
             createCamera.setState({ pictureTaken: true, screenshot: "base64image string" });
-            expect(createCamera.childAt(1).childAt(1).prop("glyphIcon")).toBe("download");
+            expect(createCamera.childAt(1).childAt(1).prop("glyphIcon")).toBe(defaultProps.savePictureIcon);
         });
     });
 
@@ -141,7 +166,7 @@ describe("Camera", () => {
             const createCameraWithButtons = shallowRenderCamera(defaultProps);
 
             createCameraWithButtons.setProps({ captionType: "buttons" });
-            expect(createCameraWithButtons.childAt(1).childAt(0).prop("buttonLabel")).toBe("Take Photo");
+            expect(createCameraWithButtons.childAt(1).childAt(0).prop("buttonLabel")).toBe(defaultProps.captureButton);
         });
 
         it("should render with 'retake button'", () => {
@@ -149,7 +174,7 @@ describe("Camera", () => {
 
             createCamera.setProps({ captionType: "buttons" });
             createCamera.setState({ pictureTaken: true, screenshot: "base64image string" });
-            expect(createCamera.childAt(1).childAt(0).prop("buttonLabel")).toBe("Retake photo");
+            expect(createCamera.childAt(1).childAt(0).prop("buttonLabel")).toBe(defaultProps.recaptureButton);
         });
 
         it("should render with 'save button'", () => {
@@ -157,19 +182,19 @@ describe("Camera", () => {
 
             createCamera.setProps({ captionType: "buttons" });
             createCamera.setState({ pictureTaken: true, screenshot: "base64image string" });
-            expect(createCamera.childAt(1).childAt(1).prop("buttonLabel")).toBe("Save");
+            expect(createCamera.childAt(1).childAt(1).prop("buttonLabel")).toBe(defaultProps.savePictureButton);
         });
     });
 
-    it("should switch/swap camera when switch camera button is clicked", () => {
-        // k
-    });
+    it("should render webcam when retake button is clicked", () => {
+        const createCamera = fullRenderCamera(defaultProps);
+        const cameraInstance = createCamera.instance() as any;
+        const retakePicture = spyOn(cameraInstance, "retakePicture").and.callThrough();
 
-    it("should respond to onclick actions", () => {
-        // const camera = shallowRenderCamera(defaultProps);
-        // camera.setProps({ onClickAction: jasmine.createSpy("onClick") });
-        // camera.childAt(1).childAt(0).simulate("click");
+        createCamera.setProps({ captionType: "buttons" });
+        createCamera.setState({ pictureTaken: true, screenshot: "base64image string" });
+        createCamera.find(".widget-camera-picture").simulate("click");
 
-        // expect(defaultProps.onClickAction).toHaveBeenCalled();
+        expect(retakePicture).toHaveBeenCalledTimes(1);
     });
 });

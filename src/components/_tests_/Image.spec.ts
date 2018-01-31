@@ -22,8 +22,8 @@ describe("Image", () => {
 
     it("should not render without src", () => {
         const renderImage = shallowRenderImage(defaultProps);
-        renderImage.setProps({ src: "" });
 
+        renderImage.setProps({ src: "" });
         expect(renderImage.prop("src").trim()).toEqual("");
     });
 

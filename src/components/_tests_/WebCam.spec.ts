@@ -10,6 +10,8 @@ describe("WebCam", () => {
         },
         filter: "sepia",
         fileType: "jpeg",
+        height: 60,
+        width: 45,
         style: { }
     };
 
