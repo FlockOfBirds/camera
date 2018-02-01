@@ -1,11 +1,12 @@
-class HomePage {
-    public get button() { return browser.element(".widget-camera-wrapper"); }
 
-    public open(): void {
-        browser.url("/");
-    }
-}
+// class HomePage {
+//     public get webcam() { return browser.element(".widget-camera-wrapper"); }
 
-const page = new HomePage();
+//     public open(): void {
+//         browser.url("/");
+//     }
+// }
 
-export default page;
+// const page = new HomePage();
+
+// export default page;

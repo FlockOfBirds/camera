@@ -20,11 +20,11 @@ cache:
   - node_modules
 env:
   global:
-  - MX_APP_NAME=CameraTest
+  - MX_APP_NAME=cameratest100
   - MX_BRANCH_NAME=trunk
   - MX_PROJECT_ID=a79676ed-aae5-48b2-a451-6e1cedbf71c0
   - MX_ENVIRONMENT=Sandbox
-  - MX_USER=sokwii@cis.mak.ac.ug
+  - MX_USER=ci@flockofbirds.org
 deploy:
   provider: releases
   api_key: $GITHUB_KEY

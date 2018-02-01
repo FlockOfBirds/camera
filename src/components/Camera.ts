@@ -13,7 +13,7 @@ export type CaptionType = "icons" | "buttons";
 export interface CameraProps {
     captureButton: string;
     captureIcon: string;
-    captionType: CaptionType;
+    caption: CaptionType;
     fileType: string;
     filter: string;
     width: number;
@@ -45,6 +45,7 @@ export type FileFormats = "jpeg" | "png" | "webp";
 export class Camera extends Component<CameraProps, CameraState> {
     private webcam?: HTMLDivElement;
     private availableDevices: string[];
+
     constructor(props: CameraProps) {
         super(props);
         this.availableDevices = [];
@@ -95,10 +96,6 @@ export class Camera extends Component<CameraProps, CameraState> {
         }
     }
 
-    componentDidUpdate() {
-        //
-    }
-
     private renderAlert(message: string): ReactElement<AlertProps> {
         return createElement(Alert, {
             bootstrapStyle: "danger",
@@ -120,7 +117,7 @@ export class Camera extends Component<CameraProps, CameraState> {
             createElement("div", {},
                 createElement(CameraButton, {
                     buttonLabel: this.props.captureButton,
-                    caption: this.props.captionType,
+                    caption: this.props.caption,
                     glyphIcon: this.props.captureIcon,
                     onClickAction: this.takePicture,
                     spanClass: "widget-camera-picture"
@@ -145,14 +142,14 @@ export class Camera extends Component<CameraProps, CameraState> {
             createElement("div", { style: { width: this.setStyle(this.props).width } },
                 createElement(CameraButton, {
                     buttonLabel: this.props.recaptureButton,
-                    caption: this.props.captionType,
+                    caption: this.props.caption,
                     glyphIcon: this.props.captureIcon,
                     onClickAction: this.retakePicture,
                     spanClass: "widget-camera-picture"
                 }),
                 createElement(CameraButton, {
                     buttonLabel:  this.props.savePictureButton,
-                    caption: this.props.captionType,
+                    caption: this.props.caption,
                     glyphIcon: this.props.savePictureIcon,
                     onClickAction: this.onClick,
                     spanClass: "widget-camera-switch-button"
@@ -165,7 +162,7 @@ export class Camera extends Component<CameraProps, CameraState> {
         if (this.state.availableDevices.length > 1) {
             return createElement(CameraButton, {
                 buttonLabel: "Switch",
-                caption: this.props.captionType,
+                caption: this.props.caption,
                 glyphIcon: this.props.switchCameraIcon,
                 onClickAction: this.changeCamera,
                 spanClass: "widget-camera-switch-button"

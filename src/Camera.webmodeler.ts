@@ -7,9 +7,9 @@ declare function require(name: string): string;
 
 // tslint:disable-next-line class-name
 export class preview extends Component<CameraContainerProps, CameraState> {
+
     constructor(props: CameraContainerProps) {
         super(props);
-
     }
 
     render() {
@@ -25,8 +25,9 @@ export class preview extends Component<CameraContainerProps, CameraState> {
             return "grayscale(1)";
         } else if (this.props.imageFilter === "sepia") {
             return "sepia(1)";
-        } else
+        } else {
             return "none";
+        }
     }
 }
 

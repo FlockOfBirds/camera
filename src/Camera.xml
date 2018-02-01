@@ -101,7 +101,7 @@
                 <translation lang="nl_NL">Gebruik foto</translation>
             </translations>
         </property>
-        <property key="captionType" type="enumeration" defaultValue="icons">
+        <property key="caption" type="enumeration" defaultValue="icons">
             <caption>Label to use</caption>
             <category>Buttons</category>
             <description>Select the type of labels for the buttons</description>

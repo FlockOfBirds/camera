@@ -23,7 +23,7 @@ export interface ModelerProps extends WrapperProps {
     captureIcon: string;
     switchCameraIcon: string;
     savePictureIcon: string;
-    captionType: CaptionType;
+    caption: CaptionType;
 }
 
 export interface CameraContainerProps extends ModelerProps {
@@ -39,6 +39,8 @@ export default class CameraContainer extends Component<CameraContainerProps> {
     constructor(props: CameraContainerProps) {
         super(props);
 
+        this.base64Image = "";
+        this.imageData = new ImageData(0, 0);
         this.setFilter = this.setFilter.bind(this);
         this.savePhoto = this.savePhoto.bind(this);
         this.base64toBlob = this.base64toBlob.bind(this);
@@ -58,8 +60,9 @@ export default class CameraContainer extends Component<CameraContainerProps> {
             return "grayscale(1)";
         } else if (this.props.imageFilter === "sepia") {
             return "sepia(1)";
-        } else
+        } else {
             return "none";
+        }
     }
 
     private filterImage(src: string) {

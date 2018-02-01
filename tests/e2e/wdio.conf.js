@@ -23,7 +23,7 @@ exports.config = {
     reporters: [ "dot", "spec" ],
     execArgv: debug ? [ "--inspect" ] : undefined,
     jasmineNodeOpts: {
-        defaultTimeoutInterval: debug ? (60 * 60 * 3000) : (10 * 3000),
+        defaultTimeoutInterval: debug ? (60 * 60 * 3000) : (100 * 3000),
         expectationResultHandler: function(passed, assertion) {
             if (passed) {
                 return;
