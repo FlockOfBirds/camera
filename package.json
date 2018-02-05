@@ -84,19 +84,17 @@
     "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "react": "^16.2.0",
-    "react-addons-test-utils": "^15.6.0",
     "react-dom": "^16.2.0",
     "react-reconciler": "0.7.0",
-    "react-test-renderer": "^15.6.1",
+    "react-test-renderer": "^16.2.0",
     "remap-istanbul": "^0.9.0",
     "sass-loader": "^6.0.3",
-    "selenium-webdriver": "^4.0.0-alpha.1",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
     "ts-loader": "^2.2.2",
     "tslint": "^5.6.0",
     "tslint-eslint-rules": "^4.1.0",
-    "typescript": "^2.4.2",
+    "typescript": "^2.5.3",
     "wdio-dot-reporter": "0.0.9",
     "wdio-jasmine-framework": "^0.3.2",
     "wdio-selenium-standalone-service": "0.0.9",
@@ -107,7 +105,6 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
-    "@types/selenium-webdriver": "^3.0.8",
     "classnames": "^2.2.5",
     "webcamjs": "^1.0.24"
   }

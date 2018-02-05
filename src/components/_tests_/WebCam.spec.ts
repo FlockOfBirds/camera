@@ -5,14 +5,14 @@ import { WebCam, WebCamProps } from "../WebCam";
 describe("WebCam", () => {
     const shallowRenderCamera = (props: WebCamProps) => shallow(createElement(WebCam, props));
     const defaultProps: WebCamProps = {
+        fileType: "jpeg",
+        filter: "sepia",
+        height: 60,
         ref: (camContainer: HTMLDivElement) => {
             camContainer = camContainer;
         },
-        filter: "sepia",
-        fileType: "jpeg",
-        height: 60,
-        width: 45,
-        style: { }
+        style: { },
+        width: 45
     };
 
     it("should render the structure correctly", () => {

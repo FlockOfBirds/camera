@@ -5,11 +5,11 @@ import { CameraButton, CameraButtonProps } from "../CameraButton";
 describe("CameraButton", () => {
     const createCameraButton = (props: CameraButtonProps) => shallow(createElement(CameraButton, props));
     const defaultProps: CameraButtonProps = {
-        spanClass: "widget-camera-picture",
+        buttonLabel: "Take photo",
+        caption: "buttons",
         glyphIcon: "camera",
         onClickAction: jasmine.createSpy("onClick"),
-        buttonLabel: "Take photo",
-        caption: "buttons"
+        spanClass: "widget-camera-picture"
     };
 
     describe("with action labels as 'buttons'", () => {
