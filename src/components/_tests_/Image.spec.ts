@@ -14,6 +14,7 @@ describe("Image", () => {
         expect(renderImage).toBeElement(
             createElement("img", {
                 alt: "Image could not be found!",
+                className: "widget-camera image",
                 src: defaultProps.src,
                 style: defaultProps.style
             })

@@ -62,8 +62,8 @@ export class WebCam extends Component<WebCamProps, {}> {
             set({
                 dest_height:  this.props.height,
                 dest_width: this.props.width,
-                image_format: this.props.fileType,
                 height:  this.props.height,
+                image_format: this.props.fileType,
                 width: this.props.width
             });
             attach(this.webcam);

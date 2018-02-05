@@ -10,22 +10,22 @@ describe("Camera", () => {
     const shallowRenderCamera = (props: CameraProps) => shallow(createElement(Camera, props));
     const fullRenderCamera = (props: CameraProps) => mount(createElement(Camera, props));
     const defaultProps: CameraProps = {
+        caption: "icons",
         captureButton: "Take Photo",
         captureIcon: "camera",
-        caption: "icons",
         fileType: "jpeg",
         filter: "none" || undefined,
-        width: 60,
-        widthUnit: "pixels",
+        height: 45,
+        heightUnit: "pixels",
         onClickAction: jasmine.any(Function),
         recaptureButton: "Retake photo",
         ref:  jasmine.any(Function),
+        savePictureButton: "Save",
+        savePictureIcon: "download",
         style: {},
         switchCameraIcon: "refresh",
-        savePictureIcon: "download",
-        savePictureButton: "Save",
-        height: 45,
-        heightUnit: "pixels"
+        width: 60,
+        widthUnit: "pixels"
     };
     const createCamera = shallowRenderCamera(defaultProps);
     const camerabuttons = createCamera.find({ spanClass: "widget-camera-picture" });
@@ -36,20 +36,20 @@ describe("Camera", () => {
         expect(camera).toBeElement(
             createElement("div", { className: "widget-camera-wrapper", style: { filter: undefined, width: "60px" , height: "45px" } },
                 createElement(WebCam, {
-                    ref: jasmine.any(Function),
                     fileType: "jpeg",
-                    width: 60,
-                    height: 45,
                     filter: "none",
-                    style: { filter: undefined, width: "60px" , height: "45px" }
+                    height: 45,
+                    ref: jasmine.any(Function),
+                    style: { filter: undefined, width: "60px" , height: "45px" },
+                    width: 60
                 }),
                 createElement("div", {},
                     createElement(CameraButton, {
-                        spanClass: "widget-camera-picture",
+                        buttonLabel: "Take Photo",
+                        caption: "icons",
                         glyphIcon: "camera",
                         onClickAction: jasmine.any(Function) ,
-                        buttonLabel: "Take Photo",
-                        caption: "icons"
+                        spanClass: "widget-camera-picture"
                     })
                 )
             ));
@@ -76,18 +76,18 @@ describe("Camera", () => {
                 }),
                 createElement("div", {},
                     createElement(CameraButton, {
-                        spanClass: "widget-camera-picture",
+                        buttonLabel: "Take Photo",
+                        caption: "icons",
                         glyphIcon: "camera",
                         onClickAction: jasmine.any(Function),
-                        buttonLabel: "Take Photo",
-                        caption: "icons"
+                        spanClass: "widget-camera-picture"
                     }),
                     createElement(CameraButton, {
-                        spanClass: "widget-camera-switch-button",
+                        buttonLabel: "Save Photo",
+                        caption: "icons",
                         glyphIcon: "download",
                         onClickAction: jasmine.any(Function),
-                        buttonLabel: "Save Photo",
-                        caption: "icons"
+                        spanClass: "widget-camera-switch-button"
                     })
                 )
             );

@@ -40,7 +40,7 @@ export default class CameraContainer extends Component<CameraContainerProps> {
         super(props);
 
         this.base64Image = "";
-        this.imageData = new ImageData(0, 0);
+        this.imageData = new ImageData(1, 1);
         this.setFilter = this.setFilter.bind(this);
         this.savePhoto = this.savePhoto.bind(this);
         this.base64toBlob = this.base64toBlob.bind(this);
