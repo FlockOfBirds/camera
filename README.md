@@ -20,37 +20,37 @@ https://cameratest100.mxapps.io/
 
 ## Usage
 The widget requires a context and should be configured as shown below
- ### Image
- #### File type
-    The file format of image/photo that is taken and stored.
- #### Image Filter
-    The filter type to applied to the capturing window of the web cam.
- #### Select Entity type
-    An entity that inherits/generalized from system.images is selected.
-### Capturing window
- #### Width unit
+ ### Apperance
+  #### Width unit
     The unit to be applied to the width of the capturing window.
+ #### Width
+    The value of the width property of the capturing window.
  #### Height unit
     The unit to be applied to the height of the capturing window.
- #### Max resolution width
-    The value of the width property of the capturing window.
- #### Max resolution height
+ #### Height
     The value of the height property of the capturing window.
-### Button captions
+ #### Image Filter
+    The filter type to applied to the capturing window of the web cam.
+### Behaviour
+ #### Select Entity type
+    An entity that inherits/generalized from system.images is selected.
+ #### File type
+    The file format of image/photo that is taken and stored.
+### Buttons
  #### Capture button
-     The label on the take picture button.
+    This caption acts as the take picture button. This button should not have an action.
  #### Recapture button
-    The label on the retake picture button.
- #### OK button
-    The label on the use picture button.
+    This caption acts as the retake picture button. This button is hidden in capture mode.
+ #### Save button
+    This caption acts as the save/submit button. This button is hidden in capture mode.
  #### Capture icon
-    Icon displayed to take pictures onn the web cam.
+    The name of the Glyphicon for the take picture button. Append the only last name of the glyphicon like "camera".
  #### Use picture icon
-    Icon displayed to save the photo captured.
+    The name of the Glyphicon for the save/submit picture button. Append the only last name of the glyphicon like "download".
  #### Switch camera icon
-    Icon displayed to call the switch camera function.
- #### Label to use
-    The kind of labels to be used for the onclick events in the widget
+    The name of the Glyphicon for the switch camera button. Append the only last name of the glyphicon like "refresh.
+ #### Caption
+    The type of labels for the buttons.
 
 ## Issues, suggestions and feature requests
 Please report issues at https://github.com/FlockOfBirds/camera/issues

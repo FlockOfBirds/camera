@@ -93,16 +93,16 @@
             </translations>
         </property>
         <property key="savePictureButton" type="translatableString" required="false" >
-            <caption>OK button</caption>
+            <caption>Save button</caption>
             <category>Buttons</category>
-            <description>This caption acts as the OK/save/submit button. This button is hidden in capture mode</description>
+            <description>This caption acts as the save/submit button. This button is hidden in capture mode</description>
             <translations>
                 <translation lang="en_US">Use photo</translation>
                 <translation lang="nl_NL">Gebruik foto</translation>
             </translations>
         </property>
         <property key="caption" type="enumeration" defaultValue="icons">
-            <caption>Label to use</caption>
+            <caption>Caption</caption>
             <category>Buttons</category>
             <description>Select the type of labels for the buttons</description>
             <enumerationValues>
