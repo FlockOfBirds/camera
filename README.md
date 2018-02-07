@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/FlockOfBirds/camera.svg?branch=feature%2Finitial)](https://travis-ci.org/FlockOfBirds/camera)
 [![codecov](https://codecov.io/gh/flockofbirds/camera/graph/badge.svg?/branch=feature%2Finitial)](https://codecov.io/gh/flockofbirds/camera)
-![badge](https://img.shields.io/badge/mendix-7.10.0-green.svg)
+![badge](https://img.shields.io/badge/mendix-7.11.0-green.svg)
 
 # Camera
 Allows users to take and save pictures on their mendix applications

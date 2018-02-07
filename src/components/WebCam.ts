@@ -7,7 +7,7 @@ export interface WebCamProps {
     filter: string;
     fileType: string;
     style: CSSProperties;
-    ref: (camContainer: HTMLDivElement) => void;
+    ref: (webcamContainer: HTMLDivElement) => void;
 }
 
 export class WebCam extends Component<WebCamProps, {}> {
@@ -25,26 +25,21 @@ export class WebCam extends Component<WebCamProps, {}> {
             this.setUpWebCam();
         } else {
             reset();
-            window.setTimeout(() => {
-                this.setUpWebCam();
-            }, 40);
+            this.setUpWebCam();
         }
     }
 
     componentDidUpdate() {
-            if (!container) {
-                this.setUpWebCam();
-            } else {
-                reset();
-                this.setUpWebCam();
-            }
+        if (!container) {
+            this.setUpWebCam();
+        }
     }
 
     render() {
         return createElement("div", {
-                ref: this.setCameraReference,
-                style: { filter: this.props.filter }
-            });
+            ref: this.setCameraReference,
+            style: { filter: this.props.filter }
+        });
     }
 
     private setCameraReference(webcam: HTMLDivElement) {
@@ -60,8 +55,8 @@ export class WebCam extends Component<WebCamProps, {}> {
                 width: this.props.width
             });
             set({
-                dest_height:  this.props.height,
-                dest_width: this.props.width,
+                dest_height:  this.webcam.parentElement.clientHeight,
+                dest_width: this.webcam.parentElement.clientWidth,
                 height:  this.props.height,
                 image_format: this.props.fileType,
                 width: this.props.width
@@ -69,4 +64,5 @@ export class WebCam extends Component<WebCamProps, {}> {
             attach(this.webcam);
         }
     }
+
 }

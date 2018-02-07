@@ -81,8 +81,7 @@ export class Camera extends Component<CameraProps, CameraState> {
                         }
                     });
                 });
-            this.setState({ availableDevices: this.availableDevices });
-            this.setState({ browserSupport: true });
+            this.setState({ availableDevices: this.availableDevices, browserSupport: true });
         }
     }
 
@@ -92,7 +91,7 @@ export class Camera extends Component<CameraProps, CameraState> {
         } else if (this.state.pictureTaken && this.state.screenshot.trim() !== "") {
             return this.renderPhoto();
         } else {
-         return this.renderWebCam();
+            return this.renderWebCam();
         }
     }
 
@@ -189,6 +188,7 @@ export class Camera extends Component<CameraProps, CameraState> {
                     screenshot: base64Image
                 });
             });
+
         }
     }
 
