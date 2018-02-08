@@ -11,7 +11,7 @@ export interface WebCamProps {
 }
 
 export class WebCam extends Component<WebCamProps, {}> {
-    private webcam?: HTMLDivElement;
+    private Webcam?: HTMLDivElement;
 
     constructor(props: WebCamProps) {
         super(props);
@@ -43,25 +43,25 @@ export class WebCam extends Component<WebCamProps, {}> {
     }
 
     private setCameraReference(webcam: HTMLDivElement) {
-        if (!this.webcam || webcam) {
-            this.webcam = webcam;
+        if (!this.Webcam || webcam) {
+            this.Webcam = webcam;
         }
     }
 
     private setUpWebCam() {
-        if (this.webcam && this.webcam.parentElement) {
+        if (this.Webcam && this.Webcam.parentElement) {
             set("constraints", {
                 height: this.props.height,
                 width: this.props.width
             });
             set({
-                dest_height:  this.webcam.parentElement.clientHeight,
-                dest_width: this.webcam.parentElement.clientWidth,
+                dest_height:  this.Webcam.parentElement.clientHeight,
+                dest_width: this.Webcam.parentElement.clientWidth,
                 height:  this.props.height,
                 image_format: this.props.fileType,
                 width: this.props.width
             });
-            attach(this.webcam);
+            attach(this.Webcam);
         }
     }
 

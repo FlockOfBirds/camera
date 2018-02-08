@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/FlockOfBirds/camera.svg?branch=feature%2Finitial)](https://travis-ci.org/FlockOfBirds/camera)
 [![codecov](https://codecov.io/gh/flockofbirds/camera/graph/badge.svg?/branch=feature%2Finitial)](https://codecov.io/gh/flockofbirds/camera)
 ![badge](https://img.shields.io/badge/mendix-7.11.0-green.svg)
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/FlockOfBirds/camera.svg)](http://isitmaintained.com/project/FlockOfBirds/camera "Percentage of issues still open")
 
 # Camera
 Allows users to take and save pictures on their mendix applications
@@ -13,7 +14,7 @@ Allows users to take and save pictures on their mendix applications
 * Swap between the different camera devices
 
 ## Dependencies
-Mendix 7.10
+Mendix 7.11
 
 ## Demo project
 https://cameratest100.mxapps.io/

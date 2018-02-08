@@ -40,15 +40,19 @@ export interface CameraState {
     screenshot: string;
 }
 
+export interface Web {
+    Webcam: HTMLVideoElement;
+}
+
 export type FileFormats = "jpeg" | "png" | "webp";
 
 export class Camera extends Component<CameraProps, CameraState> {
     private webcam?: HTMLDivElement;
     private availableDevices: string[];
+    private videoElement ?: HTMLVideoElement;
 
     constructor(props: CameraProps) {
         super(props);
-        this.availableDevices = [];
 
         this.state = {
             availableDevices: [],
@@ -61,6 +65,7 @@ export class Camera extends Component<CameraProps, CameraState> {
             swapCamera: false
         };
 
+        this.availableDevices = [];
         this.setCameraReference = this.setCameraReference.bind(this);
         this.retakePicture = this.retakePicture.bind(this);
         this.setStyle = this.setStyle.bind(this);
@@ -189,6 +194,18 @@ export class Camera extends Component<CameraProps, CameraState> {
                 });
             });
 
+            this.videoElement = ((this.webcam as any).Webcam as HTMLVideoElement).lastChild as HTMLVideoElement;
+            if (this.videoElement) {
+                this.videoElement.srcObject = stream;
+                if (this.videoElement.srcObject) {
+                    this.videoElement.srcObject.getTracks().filter((mediaTrack: MediaStreamTrack) => {
+                        if (mediaTrack.enabled === true) {
+                            mediaTrack.stop();
+                        }
+                    });
+                    this.videoElement.srcObject = null;
+                }
+            }
         }
     }
 
