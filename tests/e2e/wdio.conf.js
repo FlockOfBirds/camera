@@ -9,9 +9,9 @@ exports.config = {
         maxInstances: debug ? 1 : 5,
         browserName: "chrome",
         chromeOptions: {
-            args: ['auto-select-desktop-capture-source="Entire screen"',
-            'use-fake-device-for-media-stream',
-            'use-fake-ui-for-media-stream'],
+            args: ["auto-select-desktop-capture-source='Entire screen'",
+            "use-fake-device-for-media-stream",
+            "use-fake-ui-for-media-stream"],
             binary: process.env.BROWSERBIN
           }
     } ],

@@ -51,15 +51,15 @@ export class WebCam extends Component<WebCamProps, {}> {
     private setUpWebCam() {
         if (this.Webcam && this.Webcam.parentElement) {
             set("constraints", {
-                height: this.props.height,
-                width: this.props.width
+                height: this.Webcam.parentElement.clientHeight,
+                width: this.Webcam.parentElement.clientWidth
             });
             set({
-                dest_height:  this.Webcam.parentElement.clientHeight,
+                dest_height: this.Webcam.parentElement.clientHeight,
                 dest_width: this.Webcam.parentElement.clientWidth,
-                height:  this.props.height,
+                height: this.Webcam.parentElement.clientHeight,
                 image_format: this.props.fileType,
-                width: this.props.width
+                width: this.Webcam.parentElement.clientWidth
             });
             attach(this.Webcam);
         }

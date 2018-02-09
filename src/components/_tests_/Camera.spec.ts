@@ -98,7 +98,7 @@ describe("Camera", () => {
             const cameraInstance = camera.instance() as any;
             const takePicture = spyOn(cameraInstance, "takePicture").and.callThrough();
 
-            camera.setProps({ caption: "buttons" , width: 70, height: 50 });
+            camera.setProps({ caption: "buttons" , width: 70, height: 50 , widthUnit: "pixels" , heightUnit: "pixels" });
             camera.setState({ browserSupport: true, pictureTaken: false, screenshot: "" });
             camera.find(".widget-camera-picture").simulate("click");
 
@@ -177,8 +177,8 @@ describe("Camera", () => {
         const cameraInstance = createfullCamera.instance() as any;
         const retakePicture = spyOn(cameraInstance, "retakePicture").and.callThrough();
 
-        createfullCamera.setProps({ caption: "buttons" });
-        createfullCamera.setState({ pictureTaken: true, screenshot: "base64image string" });
+        createfullCamera.setProps({ caption: "buttons", widthUnit: "pixels" , heightUnit: "pixels" });
+        createfullCamera.setState({ pictureTaken: true, screenshot: "base64image_string" });
         createfullCamera.find(".widget-camera-picture").simulate("click");
 
         expect(retakePicture).toHaveBeenCalledTimes(1);

@@ -40,10 +40,6 @@ export interface CameraState {
     screenshot: string;
 }
 
-export interface Web {
-    Webcam: HTMLVideoElement;
-}
-
 export type FileFormats = "jpeg" | "png" | "webp";
 
 export class Camera extends Component<CameraProps, CameraState> {
