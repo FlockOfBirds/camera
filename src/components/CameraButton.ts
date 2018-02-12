@@ -1,4 +1,4 @@
-import { Component, createElement } from "react";
+import { Component, ReactElement, createElement } from "react";
 import { CaptionType } from "./Camera";
 
 export interface CameraButtonProps {
@@ -19,7 +19,7 @@ export class CameraButton extends Component<CameraButtonProps, {}> {
         );
     }
 
-    private createIcon(buttonLabel: string, glyphiconName: string , caption: CaptionType) {
+    private createIcon(buttonLabel: string, glyphiconName: string , caption: CaptionType): ReactElement<{}> {
         return(caption === "icons")
             ? createElement("span", { className: `glyphicon glyphicon-${glyphiconName}` })
             : createElement("button", { className: "btn btn-inverse active" }, buttonLabel);

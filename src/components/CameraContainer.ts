@@ -1,4 +1,5 @@
 import { Component, createElement } from "react";
+
 import { Camera, CaptionType, FileFormats } from "./Camera";
 import { parseStyle } from "../utils/ContainerUtils";
 
@@ -6,7 +7,6 @@ interface WrapperProps {
     mxObject: mendix.lib.MxObject;
     style: string;
     class: string;
-    friendlyId: string;
 }
 
 export interface ModelerProps extends WrapperProps {
@@ -27,7 +27,7 @@ export interface ModelerProps extends WrapperProps {
 }
 
 export interface CameraContainerProps extends ModelerProps {
-    onClickAction: (image: {src: string, id: string}) => {};
+    onClickAction: (image: { src: string, id: string }) => {};
     imageFilter: string;
     filter: string;
 }
@@ -49,6 +49,7 @@ export default class CameraContainer extends Component<CameraContainerProps> {
     render() {
         return createElement(Camera as any, {
             ...this.props as ModelerProps,
+            className: this.props.class,
             filter: this.setFilter(),
             onClickAction: this.savePhoto,
             style: parseStyle(this.props.style)
@@ -108,7 +109,7 @@ export default class CameraContainer extends Component<CameraContainerProps> {
         }
     }
 
-    private savePhoto(image: {src: string, id: string}) {
+    private savePhoto(image: { src: string, id: string }) {
         this.filterImage(image.src);
         if (this.props.mxObject.inheritsFrom("System.Image") && image.src) {
             mx.data.saveDocument(

@@ -1,4 +1,5 @@
 import { CSSProperties, Component, ReactElement, createElement } from "react";
+import * as classNames from "classnames";
 import { snap, stream } from "webcamjs";
 
 import { Alert, AlertProps } from "./Alert";
@@ -14,11 +15,12 @@ export interface CameraProps {
     captureButton: string;
     captureIcon: string;
     caption: CaptionType;
+    className: string;
     fileType: string;
     filter: string;
     width: number;
     widthUnit: string;
-    onClickAction: (image: {src: string, id: string }) => void;
+    onClickAction: (image: { src: string, id: string }) => void;
     recaptureButton: string;
     ref: (camContainer: HTMLDivElement) => void;
     style?: object;
@@ -44,8 +46,7 @@ export type FileFormats = "jpeg" | "png" | "webp";
 
 export class Camera extends Component<CameraProps, CameraState> {
     private webcam?: HTMLDivElement;
-    private availableDevices: string[];
-    private videoElement ?: HTMLVideoElement;
+    private videoElement?: HTMLVideoElement;
 
     constructor(props: CameraProps) {
         super(props);
@@ -61,7 +62,6 @@ export class Camera extends Component<CameraProps, CameraState> {
             swapCamera: false
         };
 
-        this.availableDevices = [];
         this.setCameraReference = this.setCameraReference.bind(this);
         this.retakePicture = this.retakePicture.bind(this);
         this.setStyle = this.setStyle.bind(this);
@@ -74,15 +74,16 @@ export class Camera extends Component<CameraProps, CameraState> {
         if (!navigator.mediaDevices) {
             this.setState({ browserSupport: false });
         } else {
+            const foundDevices: string[] = [];
             navigator.mediaDevices.enumerateDevices()
                 .then((devices: Array<{ kind: string, deviceId: string }>) => {
                     devices.filter((device: { kind: string, deviceId: string }) => {
                         if (device.kind === "videoinput") {
-                            this.availableDevices.push(device.deviceId);
+                            foundDevices.push(device.deviceId);
                         }
                     });
                 });
-            this.setState({ availableDevices: this.availableDevices, browserSupport: true });
+            this.setState({ availableDevices: foundDevices, browserSupport: true });
         }
     }
 
@@ -105,7 +106,10 @@ export class Camera extends Component<CameraProps, CameraState> {
     }
 
     private renderWebCam() {
-        return createElement("div", { className: "widget-camera-wrapper", style: this.setStyle(this.props) },
+        return createElement("div", {
+            className: classNames("widget-camera-wrapper", this.props.className),
+            style: this.setStyle(this.props)
+        },
             createElement(WebCam, {
                 fileType: this.props.fileType,
                 filter: this.props.filter,
@@ -134,7 +138,7 @@ export class Camera extends Component<CameraProps, CameraState> {
     }
 
     private renderPhoto(): ReactElement<{}> {
-        return createElement("div", { className: "widget-camera-wrapper" },
+        return createElement("div", { className: classNames("widget-camera-wrapper", this.props.className), style: this.props.style },
             createElement(Image, {
                 src: this.state.screenshot,
                 style: this.setStyle(this.props, this.props.filter)
@@ -148,7 +152,7 @@ export class Camera extends Component<CameraProps, CameraState> {
                     spanClass: "widget-camera-picture"
                 }),
                 createElement(CameraButton, {
-                    buttonLabel:  this.props.savePictureButton,
+                    buttonLabel: this.props.savePictureButton,
                     caption: this.props.caption,
                     glyphIcon: this.props.savePictureIcon,
                     onClickAction: this.onClick,
@@ -219,6 +223,7 @@ export class Camera extends Component<CameraProps, CameraState> {
     private setStyle(props: CameraProps, imageFilter?: string): CSSProperties {
         const style: CSSProperties = {
             filter: imageFilter,
+            ...this.props.style,
             width: props.widthUnit === "percentage" ? `${props.width}%` : `${props.width}px`
         };
         if (props.heightUnit === "percentageOfWidth") {

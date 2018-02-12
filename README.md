@@ -32,13 +32,13 @@ The widget requires a context and should be configured as shown below
  #### Height
     The value of the height property of the capturing window.
  #### Image Filter
-    The filter type to applied to the capturing window of the web cam.
+    The filter type to be applied to the capturing window of the web cam.
 ### Behaviour
  ![Behaviour](assets/behaviour.PNG)
  #### Select Entity type
     An entity that inherits/generalized from system.images is selected.
  #### File type
-    The file format of image/photo that is taken and stored.
+    The file format of the image/photo that is taken and stored.
 ### Buttons
  ![Buttons](assets/buttons.PNG)
  #### Capture button
@@ -48,11 +48,11 @@ The widget requires a context and should be configured as shown below
  #### Save button
     This caption acts as the save/submit button. This button is hidden in capture mode.
  #### Capture icon
-    The name of the Glyphicon for the take picture button. Append the only last name of the glyphicon like "camera".
+    The name of the Glyphicon for the take picture button. Append the only last section of the glyphicon like "camera".
  #### Use picture icon
-    The name of the Glyphicon for the save/submit picture button. Append the only last name of the glyphicon like "download".
+    The name of the Glyphicon for the save/submit picture button. Append the only last section of the glyphicon like "download".
  #### Switch camera icon
-    The name of the Glyphicon for the switch camera button. Append the only last name of the glyphicon like "refresh.
+    The name of the Glyphicon for the switch camera button. Append the only last section of the glyphicon like "refresh.
  #### Caption
     The type of labels for the buttons.
 

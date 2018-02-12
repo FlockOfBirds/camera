@@ -27,22 +27,22 @@ module.exports = function (config) {
 
     config.set({
         basePath: "",
-        frameworks: ["jasmine"],
+        frameworks: [ "jasmine" ],
         files: [
             { pattern: "src/**/*.ts", included: false, served: false, watched: true },
             { pattern: "tests/**/*.ts", included: false, served: false, watched: true },
             "tests/test-index.js"
         ],
         exclude: [],
-        preprocessors: { "tests/test-index.js": ["webpack", "sourcemap"] },
+        preprocessors: { "tests/test-index.js": [ "webpack", "sourcemap" ] },
         webpack: webpackConfig,
         webpackServer: { noInfo: true },
-        reporters: ["progress", config.codeCoverage ? "coverage" : "kjhtml"],
+        reporters: [ "progress", config.codeCoverage ? "coverage" : "kjhtml" ],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ["Chrome"],
+        browsers: [ "Chrome" ],
         singleRun: false,
         concurrency: Infinity,
         coverageReporter: {

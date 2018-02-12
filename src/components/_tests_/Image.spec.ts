@@ -1,5 +1,6 @@
-import { shallow } from "enzyme";
 import { createElement } from "react";
+import { shallow } from "enzyme";
+
 import { Image, ImageProps } from "../Image";
 
 describe("Image", () => {
@@ -11,6 +12,7 @@ describe("Image", () => {
 
     it("should render the structure correctly", () => {
         const renderImage = shallowRenderImage(defaultProps);
+
         expect(renderImage).toBeElement(
             createElement("img", {
                 alt: "Image could not be found!",
@@ -30,6 +32,7 @@ describe("Image", () => {
 
     it("should not render without style", () => {
         const renderImage = shallowRenderImage(defaultProps);
+
         expect(renderImage.prop("style")).toBeDefined();
     });
 

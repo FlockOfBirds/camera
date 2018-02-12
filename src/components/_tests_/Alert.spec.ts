@@ -25,7 +25,7 @@ describe("Alert", () => {
     });
 
     it("renders no structure when the alert message is not specified", () => {
-        const alert = renderAlert({ bootstrapStyle: "danger" , message: "" });
+        const alert = renderAlert({ bootstrapStyle: "danger", message: "" });
 
         expect(alert).toBeElement(null);
     });

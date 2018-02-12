@@ -15,6 +15,7 @@ describe("CameraButton", () => {
     describe("with action labels as 'buttons'", () => {
         it("should render the structure correctly", () => {
             const cameraButton = createCameraButton(defaultProps);
+
             expect(cameraButton).toBeElement(
                 createElement("span", {
                     className: defaultProps.spanClass,
@@ -35,9 +36,11 @@ describe("CameraButton", () => {
 
     describe("with action labels as 'icons'", () => {
         it("should render the structure correctly", () => {
-            defaultProps.caption = "icons";
-            const cameraButton = createCameraButton(defaultProps);
-            expect(cameraButton).toBeElement(
+            const customProps: CameraButtonProps = defaultProps;
+            customProps.caption = "icons";
+            const cameraWithIcon = createCameraButton(customProps);
+
+            expect(cameraWithIcon).toBeElement(
                 createElement("span", {
                     className: defaultProps.spanClass,
                     onClick: defaultProps.onClickAction

@@ -3,11 +3,11 @@ import { attach, container, reset, set } from "webcamjs";
 
 export interface WebCamProps {
     height: number;
-    width: number;
     filter: string;
     fileType: string;
     style: CSSProperties;
     ref: (webcamContainer: HTMLDivElement) => void;
+    width: number;
 }
 
 export class WebCam extends Component<WebCamProps, {}> {

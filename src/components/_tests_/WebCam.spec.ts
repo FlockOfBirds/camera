@@ -11,7 +11,7 @@ describe("WebCam", () => {
         ref: (camContainer: HTMLDivElement) => {
             camContainer = camContainer;
         },
-        style: { },
+        style: {},
         width: 45
     };
 
@@ -19,9 +19,9 @@ describe("WebCam", () => {
         const renderCamera = shallowRenderCamera(defaultProps);
 
         expect(renderCamera).toBeElement(
-          createElement("div", {
+            createElement("div", {
                 style: { filter: defaultProps.filter }
             })
-         );
+        );
     });
 });
