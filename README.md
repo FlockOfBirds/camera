@@ -21,7 +21,8 @@ https://cameratest100.mxapps.io/
 
 ## Usage
 The widget requires a context and should be configured as shown below
- ### Apperance
+ ### Appearance
+ ![Appearance](assets/appearance.PNG)
   #### Width unit
     The unit to be applied to the width of the capturing window.
  #### Width
@@ -33,11 +34,13 @@ The widget requires a context and should be configured as shown below
  #### Image Filter
     The filter type to applied to the capturing window of the web cam.
 ### Behaviour
+ ![Behaviour](assets/behaviour.PNG)
  #### Select Entity type
     An entity that inherits/generalized from system.images is selected.
  #### File type
     The file format of image/photo that is taken and stored.
 ### Buttons
+ ![Buttons](assets/buttons.PNG)
  #### Capture button
     This caption acts as the take picture button. This button should not have an action.
  #### Recapture button
